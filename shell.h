@@ -7,6 +7,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <stddef.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <sys/stat.h>
 
 #define MAX_COMMAND_LENGTH 100
 #define BUFF_SIZE 1024
@@ -19,6 +24,11 @@ pid_t fork(void);
 ssize_t write(int fd, const void *buf, size_t count);
 char *strtok(char *str, const char *delim);
 int execvp(const char *file, char *const argv[]);
+char *getenv(const char *name);
+void handlePath(char *prompt, char **envp);
+void shellexit(int statu);
+int implementExitCommand(char *line);
+char *getenv(const char *name);
 
 
 
