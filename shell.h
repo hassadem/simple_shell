@@ -15,7 +15,10 @@
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *stream);
-pid_t fork(void);ssize_t write(int fd, const void *buf, size_t count);
+pid_t fork(void);
+ssize_t write(int fd, const void *buf, size_t count);
+char *strtok(char *str, const char *delim);
+int execvp(const char *file, char *const argv[]);
 
 
 
