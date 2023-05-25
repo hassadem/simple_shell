@@ -1,34 +1,36 @@
 #ifndef SHELL_H
 #define SHELL_H
+
+
 /* Libraries */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
-#include <stddef.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <sys/stat.h>
+#include <sys/types.h>
 
-#define MAX_COMMAND_LENGTH 100
-#define BUFF_SIZE 1024
+#define TOK_DELIM " \t\r\n\a "
+extern char **environ;
 
-/* Prototypes */
+/* PROTOTYPES */
 
-ssize_t getline(char **lineptr, size_t *n, FILE *stream);
-ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *stream);
+void my_interactive_shell(void);
+void my_non_interactive_shell(void);
+char *read_line(void);
+char **split_line(char *line);
+int execute_args(char **args);
+int new_process(char **args);
+char *read_stream(void);
+int my_cd(char **args);
+int my_exit(char **args);
+int my_env();
+int my_help();
 pid_t fork(void);
-ssize_t write(int fd, const void *buf, size_t count);
+pid_t wait(int *wstatus);
 char *strtok(char *str, const char *delim);
-int execvp(const char *file, char *const argv[]);
-char *getenv(const char *name);
-void handlePath(char *prompt, char **envp);
-void shellexit(int statu);
-int implementExitCommand(char *line);
-char *getenv(const char *name);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 
 

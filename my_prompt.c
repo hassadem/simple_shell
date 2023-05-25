@@ -1,59 +1,26 @@
 #include "shell.h"
 
 /**
- * main - this the function to prompt user to write to the console
- * @argc: the function for the position of the array element
- * @arg: parameters for sting array
+ * my_interactive_shell - function to check if the shell is been interactive
  *
- * Return: if successful return 1 andi if fail retun 98
+ * Return: void
  */
-
-int main(int argc, char **arg)
+void my_interactive_shell(void)
 {
-	char *token;
-	char *args[256];
-	int argIndex = 0;
-	pid_t pid = fork();
-	char *prompt = "(USER) $ ";
-	char *lineptr;
-	size_t i = 0;
-	ssize_t myChar;
-	(void)argc;
-	(void)arg;
+	char *line;
+	char **arg;
+	int status = -1;
 
-	while (1)
-	{
-		printf("%s", prompt);
-		myChar = getline(&lineptr, &i, stdin);
-		if (myChar == -1)
+	do {
+		printf("simple_prompt$ ");
+		line = read_line();
+		arg = split_line(line);
+		status = execute_args(arg);
+		free(line);
+		free(arg);
+		if (status >= 0)
 		{
-			printf("Exit My shell\n");
-			break;
+			exit(status);
 		}
-		lineptr[strcspn(lineptr, "\nn")] = '\0';
-		token = strtok(lineptr, " ");
-		while (token != NULL && argIndex < 255)
-		{
-			args[argIndex++] = token;
-			token = strtok(NULL, " ");
-		}
-		args[argIndex] = NULL;
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		else if (pid == 0)
-		{
-			execvp(args[0], args);
-			perror("execvp");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			wait(NULL);
-		}
-	}
-	free(lineptr);
-	return (0);
+	} while (status == -1);
 }
